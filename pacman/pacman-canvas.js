@@ -26,9 +26,10 @@ function geronimo() {
 
 	/* AJAX stuff */
 	function getHighscore() {
-		setTimeout(ajax_get,30);
+		setTimeout(ajax_get,5);
 	}
 	function ajax_get() {
+		console.log('Calling get service')
 		var date = new Date().getTime();
 		var server = location.protocol + "//" + location.hostname + ":5000";
 		$.ajax({
@@ -44,10 +45,17 @@ function geronimo() {
 			 for (var i = 0; i < msg.data.length; i++) {
 				$("#highscore-list").append("<li>"+msg.data[i]['user_name']+"<span id='score'>"+msg.data[i]['score']+"</span></li>");
 			 }
-		   } 
+		   },
+                   error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('Error on get')
+                   	console.log(jqXHR)
+                   	console.log(textStatus)
+                   	console.log(errorThrown)
+                   } 
 		});
 	}
 	function ajax_add(n, s, l, id) {
+		console.log('Calling add service')
 		var server = location.protocol + "//" + location.hostname + ":5000";
 		$.ajax({
 		   type: 'POST',
@@ -64,15 +72,18 @@ function geronimo() {
 				console.log('Highscore added: ' + data);
 				sessionStorage.setItem('id',data.id);
 				$('#highscore-form').html('<span class="button" id="show-highscore">View Highscore List</span>');
-			},
-			error: function(errorThrown) {
-				console.log(errorThrown);
-			}
+		   },
+                   error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('Error on add')
+                   	console.log(jqXHR)
+                   	console.log(textStatus)
+                   	console.log(errorThrown)
+                   }
 		});
 	}
 
 	function addHighscore() {
-			var name = $("input[type=text]").val();
+			var name = $('#playerName').val();
 			if(name != sessionStorage.getItem('name')){
 				sessionStorage.setItem('name', name);
 				sessionStorage.setItem('id', 0);
@@ -1192,7 +1203,7 @@ function geronimo() {
     		this.lives--;
 	        console.log("pacman died, "+this.lives+" lives left");
 	    	if (this.lives <= 0) {
-				var input = "<div id='highscore-form'><span id='form-validater'></span><input type='text' id='playerName'/><span class='button' id='score-submit'>save</span></div>";
+				var input = "<div id='highscore-form'><span id='form-validater'></span><input type='email' id='playerName' placeholder='Type your email'/><span class='button' id='score-submit'>save</span></div>";
 				game.showMessage("Game over","Total Score: "+game.score.score+input);
 				game.gameOver = true;
 				$('#playerName').focus();
@@ -1289,8 +1300,13 @@ function checkAppCache() {
 
 		$('body').on('click', '#score-submit', function(){
 			console.log("submit highscore pressed");
-			if ($('#playerName').val() === "" || $('#playerName').val() === undefined) {
-				$('#form-validater').html("Please enter a name<br/>");
+			function validateEmail(email) {
+    				var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				return re.test(String(email).toLowerCase());
+			}
+
+			if (!validateEmail($('#playerName').val()) || $('#playerName').val() === "" || $('#playerName').val() === undefined) {
+				$('#form-validater').html("Please enter a valid email<br/>");
 			} else {
 				$('#form-validater').html("");
 				addHighscore();

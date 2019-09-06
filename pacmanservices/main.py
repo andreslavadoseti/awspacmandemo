@@ -38,7 +38,7 @@ def add_user():
 		cursor.close() 
 		conn.close()
 
-@app.route('/highscore')
+@app.route('/highscore', methods=['GET'])
 def highscore():
 	try:
 		conn = mysql.connect()
