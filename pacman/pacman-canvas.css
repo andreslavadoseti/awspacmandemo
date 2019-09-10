@@ -91,7 +91,7 @@ input[type="text"]:hover, input[type="text"]:focus, input[type="password"]:hover
 .canvas { position:absolute; padding-top: 20px;}
 .main {width: 100%; max-width: 660px; margin: 10px auto; position: static; left: auto;}
 .content { width: 100%; max-width: 540px; text-align: left; margin: 0;}
-.container {text-align: center; margin:0; padding: 0;}
+.gcontainer {text-align: center; margin:0; padding: 0;}
 .wrapper { padding:0;}
 .game  { max-width: 540px; margin: auto; }
 
