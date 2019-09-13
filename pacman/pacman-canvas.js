@@ -31,7 +31,7 @@ function geronimo() {
 	function ajax_get() {
 		console.log('Calling get service')
 		var date = new Date().getTime();
-		var server = location.protocol + "//" + location.hostname + ":5000";
+		var server =  "http://" + location.hostname + ":5000";
 		$.ajax({
 		   datatype: "json",
 		   type: "GET",
@@ -56,7 +56,7 @@ function geronimo() {
 	}
 	function ajax_add(n, s, l, id) {
 		console.log('Calling add service')
-		var server = location.protocol + "//" + location.hostname + ":5000";
+		var server =  "http://" + location.hostname + ":5000";
 		$.ajax({
 		   type: 'POST',
 		   url: server + '/add',
